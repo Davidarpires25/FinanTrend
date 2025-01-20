@@ -51,7 +51,7 @@ namespace FinanceProject.Server.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdComment.Id }, createdComment.ToCommentDto());
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> update([FromRoute] int id, [FromBody] UpdateCommentRequestDto commentDto)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto commentDto)
         {
            
            var commentModel= await _commentRepository.UpdateAsync(id, commentDto.ToCommentFromUpdateDto());
@@ -63,5 +63,18 @@ namespace FinanceProject.Server.Controllers
             return Ok(commentModel.ToCommentDto());
 
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var commentModel = await _commentRepository.DeleteAsync(id);
+            if (commentModel == null)
+            {
+                return NotFound("Comment does not exist");
+            }
+            return Ok(commentModel.ToCommentDto());
+        }
+
+
     }
 }
