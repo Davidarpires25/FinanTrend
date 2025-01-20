@@ -19,7 +19,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 
 
 
-builder.Services.AddScoped<IstockRepository, StockRepository>();
+builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 // Add services to the container.

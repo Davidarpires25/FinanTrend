@@ -18,15 +18,15 @@ namespace FinanceProject.Server.Mappers
 
         }
 
-        public static Comment ToCommentFromCreateDto(UpdateCommentRequestDto updateCommentRequestDto)
+        public static Comment ToCommentFromCreateDto(this CreateCommentRequestDto commentMode,int id)
         {
 
             return new Comment
             {
-                Title = updateCommentRequestDto.Title,
-                Content = updateCommentRequestDto.Content,
-                CreatedOn = updateCommentRequestDto.CreatedOn,
-                StockId = updateCommentRequestDto.StockId
+                Title = commentMode.Title,
+                Content = commentMode.Content,
+                StockId = id
+
             };
         }
 

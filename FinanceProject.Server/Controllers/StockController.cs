@@ -13,9 +13,9 @@ namespace FinanceProject.Server.Controllers
     public class StockController : Controller
     {
         private readonly ApplicationDBContext _dBContext;
-        private readonly IstockRepository _stockRepo;
+        private readonly IStockRepository _stockRepo;
 
-        public StockController(ApplicationDBContext context, IstockRepository stockRepo )
+        public StockController(ApplicationDBContext context, IStockRepository stockRepo )
         {
             this._stockRepo = stockRepo;
 

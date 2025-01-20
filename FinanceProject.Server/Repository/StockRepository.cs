@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceProject.Server.Repository
 {
-    public class StockRepository : IstockRepository
+    public class StockRepository : IStockRepository
     {
         private readonly ApplicationDBContext _dBContext;
 
@@ -44,6 +44,12 @@ namespace FinanceProject.Server.Repository
         public async Task<Stock?> GetByIdAsync(int id)
         {
             return await _dBContext.Stocks.FindAsync(id); 
+        }
+
+        public Task<bool> StockExist(int id)
+        {
+            return _dBContext.Stocks.AnyAsync(x => x.Id == id);
+           
         }
 
         public async Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto stockDto)
