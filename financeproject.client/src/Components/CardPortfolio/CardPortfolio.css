@@ -1,0 +1,6 @@
+/* Define la clase para la sombra blanca */
+
+
+.dark .white-shadow {
+    box-shadow: 0 10px 8px rgba(255, 255, 255, 0.04), 0 4px 3px rgba(255, 255, 255, 0.1);
+}
