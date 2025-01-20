@@ -5,6 +5,7 @@ using FinanceProject.Server.Dtos.Stock;
 using Microsoft.EntityFrameworkCore;
 using FinanceProject.Server.Interfaces;
 using FinanceProject.Server.Models;
+using FinanceProject.Server.Helpers;
 
 namespace FinanceProject.Server.Controllers
 {
@@ -24,9 +25,13 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetStocks()
+        public async Task<IActionResult> GetStocks([FromQuery] QueryObject query)
         {
-            var stocks = await _stockRepo.GetAllAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var stocks = await _stockRepo.GetAllAsync(query);
             var stocksDto=stocks.Select(s => s.ToStockDto());
 
 
@@ -35,19 +40,31 @@ namespace FinanceProject.Server.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id) {
+            
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var stock = await _stockRepo.GetByIdAsync(id);
             if (stock == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound, "Stock not found");
             }
-            return StatusCode(StatusCodes.Status200OK, stock.ToStockDto());
+            return Ok(stock.ToStockDto());
         }
 
         [HttpPost]
 
         public async Task<IActionResult> setStock([FromBody] CreateStockRequestDto stockDto) {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var stockModel = stockDto.ToStockFromCreateDto();
             await _stockRepo.CreateAsync(stockModel);
 
@@ -55,8 +72,14 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> updateStock([FromRoute] int id, [FromBody] UpdateStockRequestDto stockDto) {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var stockModel = await _stockRepo.UpdateAsync(id,stockDto.ToStockFromUpdateDto());
 
             if (stockModel == null)
@@ -67,8 +90,14 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task <IActionResult> deleteStock([FromRoute] int id) {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var stockModel = await _stockRepo.DeleteAsync(id);
             if (stockModel == null) {
                 return NotFound("stock not found");

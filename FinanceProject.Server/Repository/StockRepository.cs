@@ -1,5 +1,6 @@
 ﻿using FinanceProject.Server.Data;
 using FinanceProject.Server.Dtos.Stock;
+using FinanceProject.Server.Helpers;
 using FinanceProject.Server.Interfaces;
 using FinanceProject.Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -36,14 +37,23 @@ namespace FinanceProject.Server.Repository
             return stockModel;
         }
 
-        public async Task<List<Stock>> GetAllAsync()
+        public async Task<List<Stock>> GetAllAsync(QueryObject query)
         {
-            return await _dBContext.Stocks.Include(c => c.Comments).ToListAsync();
+            var stock = _dBContext.Stocks.Include(c => c.Comments).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(query.companyName))
+            {
+                stock = stock.Where(s => s.CompanyName.Contains(query.companyName));
+            }
+            if (!string.IsNullOrWhiteSpace(query.symbol))
+            {
+                stock = stock.Where(s => s.Symbol.Contains(query.symbol));
+            }
+            return await stock.ToListAsync();
         }
 
         public async Task<Stock?> GetByIdAsync(int id)
         {
-            return await _dBContext.Stocks.FindAsync(id); 
+            return await _dBContext.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public Task<bool> StockExist(int id)

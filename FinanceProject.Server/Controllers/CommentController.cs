@@ -24,13 +24,21 @@ namespace FinanceProject.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetComments()
         {
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState);
+            }
             var comments = await _commentRepository.GetAllAsync();
             var commentsDto = comments.Select(c => c.ToCommentDto());
             return Ok(commentsDto);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
 
         public async Task<IActionResult> GetById([FromRoute] int id) {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var commentModel = await _commentRepository.GetByIdAsync(id);
 
             if (commentModel == null) {
@@ -40,9 +48,15 @@ namespace FinanceProject.Server.Controllers
 
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("{stockId:int}")]
         public async Task<IActionResult> Create([FromRoute] int stockId, [FromBody] CreateCommentRequestDto commentDto)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (!await _stockRepository.StockExist(stockId)) {
                 return BadRequest("Stock does not exist");
             }
@@ -50,11 +64,14 @@ namespace FinanceProject.Server.Controllers
             var createdComment = await _commentRepository.CreateAsync(commentModel);
             return CreatedAtAction(nameof(GetById), new { id = createdComment.Id }, createdComment.ToCommentDto());
         }
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto commentDto)
         {
-           
-           var commentModel= await _commentRepository.UpdateAsync(id, commentDto.ToCommentFromUpdateDto());
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var commentModel= await _commentRepository.UpdateAsync(id, commentDto.ToCommentFromUpdateDto());
 
             if (commentModel == null)
             {
@@ -64,9 +81,14 @@ namespace FinanceProject.Server.Controllers
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var commentModel = await _commentRepository.DeleteAsync(id);
             if (commentModel == null)
             {

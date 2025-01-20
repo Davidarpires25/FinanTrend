@@ -47,13 +47,13 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/api/Stock': {
-                target,
-                changeOrigin: true,
-                secure: false
+            '/api/Stock': {
+                target: 'http://localhost:5251',
+                changeOrigin: true, // Cambia el origen del host al del backend
+                secure: false,
             },
             '^/api/Comment': {
-                target,
+                target: "http://localhost:5251",
                 changeOrigin: true,
                 secure: false
             },
