@@ -1,4 +1,5 @@
-﻿using FinanceProject.Server.Dtos.Stock;
+﻿using FinanceProject.Server.Dtos.Comment;
+using FinanceProject.Server.Dtos.Stock;
 using FinanceProject.Server.Models;
 
 namespace FinanceProject.Server.Interfaces

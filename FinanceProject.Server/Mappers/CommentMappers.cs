@@ -29,6 +29,17 @@ namespace FinanceProject.Server.Mappers
 
             };
         }
+        public static Comment ToCommentFromUpdateDto(this UpdateCommentRequestDto commentModel)
+        {
+
+            return new Comment
+            {
+                Title = commentModel.Title,
+                Content = commentModel.Content,
+              
+
+            };
+        }
 
     }
 }

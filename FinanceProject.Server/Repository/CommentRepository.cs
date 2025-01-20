@@ -56,17 +56,24 @@ namespace FinanceProject.Server.Repository
             }
             commentModel.Title = commentDto.Title;
             commentModel.Content = commentDto.Content;
-            commentModel.CreatedOn = commentDto.CreatedOn;
-            commentModel.StockId = commentDto.StockId;
+         
 
             return commentModel;
             
 
         }
 
-        public Task<Comment?> UpdateAsync(int id, Comment commentModel)
+        public async Task<Comment?> UpdateAsync(int id, Comment commentModel)
         {
-            throw new NotImplementedException();
+            var comment = await _dBContext.Comments.FirstOrDefaultAsync(x => x.Id == id);
+            if (comment == null)
+            {
+                return null;
+            }
+            comment.Title = commentModel.Title;
+            comment.Content = commentModel.Content;
+            await _dBContext.SaveChangesAsync();
+            return comment;
         }
     }
 }

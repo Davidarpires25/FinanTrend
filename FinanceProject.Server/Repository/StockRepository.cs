@@ -52,23 +52,23 @@ namespace FinanceProject.Server.Repository
            
         }
 
-        public async Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto stockDto)
+        public async Task<Stock?> UpdateAsync(int id, Stock stockUpdate)
         {
-            var stockModel = await _dBContext.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(x => x.Id == id);
-            if (stockModel == null)
+            var stock = await _dBContext.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(x => x.Id == id);
+            if (stock == null)
             {
                 return null;
             }
-            stockModel.Symbol = stockDto.Symbol;
-            stockModel.CompanyName = stockDto.CompanyName;
-            stockModel.Purchase = stockDto.Purchase;
-            stockModel.LastDiv = stockDto.LastDiv;
-            stockModel.Industry = stockDto.Industry;
-            stockModel.MarketCap = stockDto.MarketCap;
+            stock.Symbol = stockUpdate.Symbol;
+            stock.CompanyName = stockUpdate.CompanyName;
+            stock.Purchase = stockUpdate.Purchase;
+            stock.LastDiv = stockUpdate.LastDiv;
+            stock.Industry = stockUpdate.Industry;
+            stock.MarketCap = stockUpdate.MarketCap;
 
             await _dBContext.SaveChangesAsync();
 
-            return stockModel;
+            return stock;
 
         }
     }

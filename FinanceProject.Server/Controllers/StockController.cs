@@ -4,6 +4,7 @@ using FinanceProject.Server.Mappers;
 using FinanceProject.Server.Dtos.Stock;
 using Microsoft.EntityFrameworkCore;
 using FinanceProject.Server.Interfaces;
+using FinanceProject.Server.Models;
 
 namespace FinanceProject.Server.Controllers
 {
@@ -56,11 +57,11 @@ namespace FinanceProject.Server.Controllers
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> updateStock([FromRoute] int id, [FromBody] UpdateStockRequestDto stockDto) {
-            var stockModel = await _stockRepo.UpdateAsync(id,stockDto);
+            var stockModel = await _stockRepo.UpdateAsync(id,stockDto.ToStockFromUpdateDto());
 
             if (stockModel == null)
             {
-                return NotFound();
+                return NotFound("stock not found");
             }
             return Ok(stockModel.ToStockDto());
         }
@@ -70,7 +71,7 @@ namespace FinanceProject.Server.Controllers
         public async Task <IActionResult> deleteStock([FromRoute] int id) {
             var stockModel = await _stockRepo.DeleteAsync(id);
             if (stockModel == null) {
-                return NotFound();
+                return NotFound("stock not found");
             }
             return NoContent();
         }

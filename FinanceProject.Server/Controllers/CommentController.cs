@@ -50,5 +50,18 @@ namespace FinanceProject.Server.Controllers
             var createdComment = await _commentRepository.CreateAsync(commentModel);
             return CreatedAtAction(nameof(GetById), new { id = createdComment.Id }, createdComment.ToCommentDto());
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> update([FromRoute] int id, [FromBody] UpdateCommentRequestDto commentDto)
+        {
+           
+           var commentModel= await _commentRepository.UpdateAsync(id, commentDto.ToCommentFromUpdateDto());
+
+            if (commentModel == null)
+            {
+                return NotFound("Comment not found");
+            }
+            return Ok(commentModel.ToCommentDto());
+
+        }
     }
 }
