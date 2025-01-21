@@ -1,4 +1,5 @@
 ﻿using FinanceProject.Server.Dtos.Account;
+using FinanceProject.Server.Interfaces;
 using FinanceProject.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,12 @@ namespace FinanceProject.Server.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
-        public AccountController(UserManager<AppUser> userManager)
+
+        private readonly ITokenService _TokenService;
+        public AccountController(UserManager<AppUser> userManager,ITokenService Token)
         {
             this._userManager = userManager;
+            _TokenService = Token;
 
 
         }
@@ -42,7 +46,11 @@ namespace FinanceProject.Server.Controllers
                     {
                         return StatusCode(500, roleResult.Errors);
                     }
-                    return Ok("User Created Successfully");
+                    return Ok(new CreateUserDto {
+                        UserName = account.UserName,
+                        Email = account.Email,
+                        Token= _TokenService.CreateToken(account)
+                    });
                 }
                 else
                 {
