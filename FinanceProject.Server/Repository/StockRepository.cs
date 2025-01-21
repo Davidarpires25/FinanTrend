@@ -48,7 +48,16 @@ namespace FinanceProject.Server.Repository
             {
                 stock = stock.Where(s => s.Symbol.Contains(query.symbol));
             }
-            return await stock.ToListAsync();
+            if (!string.IsNullOrWhiteSpace(query.sortBy))
+            {
+                if (query.sortBy.Equals("symbol",StringComparison.OrdinalIgnoreCase)) {
+                    stock= query.isDescending? stock.OrderByDescending(s=>s.Symbol): stock.OrderBy(s => s.Symbol);
+                }
+            }
+
+            var skipNumber= (query.PageNumber - 1) * query.PageSize;
+
+            return await stock.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Stock?> GetByIdAsync(int id)
