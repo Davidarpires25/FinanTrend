@@ -15,7 +15,7 @@ namespace FinanceProject.Server.Data
         public DbSet<Stock> Stocks { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;
 
-        public DbSet<Portfolio> Portfolio { get; set; } = null!;
+        public DbSet<Portfolio> Portfolios { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -3,6 +3,7 @@ using FinanceProject.Server.Dtos.Stock;
 using FinanceProject.Server.Helpers;
 using FinanceProject.Server.Interfaces;
 using FinanceProject.Server.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceProject.Server.Repository
@@ -63,6 +64,13 @@ namespace FinanceProject.Server.Repository
         public async Task<Stock?> GetByIdAsync(int id)
         {
             return await _dBContext.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(i => i.Id == id);
+        }
+
+        public async Task<Stock?> GetBySymbolAsync(string symbol)
+        {
+            return await _dBContext.Stocks.FirstOrDefaultAsync(i => i.Symbol == symbol);
+
+
         }
 
         public Task<bool> StockExist(int id)
