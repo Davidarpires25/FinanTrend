@@ -1,5 +1,9 @@
-﻿namespace FinanceProject.Server.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FinanceProject.Server.Models
 {
+    [Table("Comment")]
+
     public class Comment
     {
         public int Id { get; set; }

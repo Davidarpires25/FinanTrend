@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using FinanceProject.Server.Interfaces;
 using FinanceProject.Server.Models;
 using FinanceProject.Server.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinanceProject.Server.Controllers
 {
@@ -25,6 +26,7 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetStocks([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
