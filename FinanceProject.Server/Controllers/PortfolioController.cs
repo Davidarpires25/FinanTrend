@@ -1,6 +1,7 @@
 ﻿using FinanceProject.Server.Extensions;
 using FinanceProject.Server.Interfaces;
 using FinanceProject.Server.Models;
+using FinanceProject.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,14 @@ namespace FinanceProject.Server.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IStockRepository _stockRepository;
         private readonly IPortfolioRepository _portfolioRepository;
+        private readonly IFMPService _fMPService;
 
-        public PortfolioController(UserManager<AppUser> userManager, IStockRepository stockRepository,IPortfolioRepository portfolioRepository)
+        public PortfolioController(UserManager<AppUser> userManager, IStockRepository stockRepository,IPortfolioRepository portfolioRepository, IFMPService fMPService)
         {
             _userManager = userManager;
             _stockRepository = stockRepository;
             _portfolioRepository = portfolioRepository;
+            _fMPService = fMPService;
 
         }
 
@@ -41,10 +44,20 @@ namespace FinanceProject.Server.Controllers
             var appUser = await _userManager.FindByNameAsync(username);
             var stock= await _stockRepository.GetBySymbolAsync(symbol);
 
+
             if (stock == null)
             {
-                return BadRequest("Stock does not exist");
+                stock = await _fMPService.FindStockBySymbolAsync(symbol);
+                if (stock == null)
+                {
+                    return BadRequest("Stock does not exist");
+                }
+                else
+                {
+                    await _stockRepository.CreateAsync(stock);
+                }
             }
+          
             var userPortfolio = await _portfolioRepository.GetUserPortfolio(appUser);
             if (userPortfolio.Any(p => p.Symbol.ToLower() == symbol.ToLower()))
             {
