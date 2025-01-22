@@ -37,12 +37,12 @@ namespace FinanceProject.Server.Repository
 
         public async Task<List<Comment>> GetAllAsync()
         {
-            return await _dBContext.Comments.ToListAsync();
+            return await _dBContext.Comments.Include(a => a.AppUser).ToListAsync();
         }
 
         public async Task<Comment?> GetByIdAsync(int id)
         {
-            return await _dBContext.Comments.FindAsync(id);
+            return await _dBContext.Comments.Include(a=>a.AppUser).FirstOrDefaultAsync(x => x.Id==id);
 
         }
 

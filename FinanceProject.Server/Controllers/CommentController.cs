@@ -1,7 +1,10 @@
 ﻿using FinanceProject.Server.Data;
 using FinanceProject.Server.Dtos.Comment;
+using FinanceProject.Server.Extensions;
 using FinanceProject.Server.Interfaces;
 using FinanceProject.Server.Mappers;
+using FinanceProject.Server.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceProject.Server.Controllers
@@ -12,12 +15,14 @@ namespace FinanceProject.Server.Controllers
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IStockRepository _stockRepository;
+        private readonly UserManager<AppUser> _userManager;
 
 
-        public CommentController(ICommentRepository commentRepository,IStockRepository stockRepository)
+        public CommentController(ICommentRepository commentRepository,IStockRepository stockRepository, UserManager<AppUser> userManager)
         {
-            this._commentRepository = commentRepository;
-            this._stockRepository = stockRepository;
+            _commentRepository = commentRepository;
+            _stockRepository = stockRepository;
+            _userManager = userManager;
 
         }
 
@@ -60,10 +65,16 @@ namespace FinanceProject.Server.Controllers
             if (!await _stockRepository.StockExist(stockId)) {
                 return BadRequest("Stock does not exist");
             }
+            var userName = User.GetUsername();
+            var user = await _userManager.FindByNameAsync(userName);
+
             var commentModel = commentDto.ToCommentFromCreateDto(stockId);
+            commentModel.UserId = user.Id;
             var createdComment = await _commentRepository.CreateAsync(commentModel);
             return CreatedAtAction(nameof(GetById), new { id = createdComment.Id }, createdComment.ToCommentDto());
         }
+
+
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto commentDto)
         {

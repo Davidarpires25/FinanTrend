@@ -13,6 +13,7 @@ namespace FinanceProject.Server.Mappers
                 Title = commentModel.Title,
                 Content = commentModel.Content,
                 CreatedOn = commentModel.CreatedOn,
+                createdBy = commentModel.AppUser.UserName,
                 StockId = commentModel.StockId
             };
 
