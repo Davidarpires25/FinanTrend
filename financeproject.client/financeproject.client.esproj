@@ -12,6 +12,7 @@
     <Folder Include="src\Models\" />
     <Folder Include="src\Context\" />
     <Folder Include="src\Pages\LoginPage\" />
+    <Folder Include="src\Pages\RegisterPage\" />
     <Folder Include="src\Services\" />
     <Folder Include="src\Components\CompanyProfile\" />
     <Folder Include="src\Components\CompFinder\CompFinderItem\" />

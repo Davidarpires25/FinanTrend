@@ -74,7 +74,7 @@ export const UserProvider = ({ children }: Props) => {
                     localStorage.setItem("user", JSON.stringify(userObj));
                     setToken(response?.data.token);
                     setUser(userObj!);
-                    toast.success("User registered successfully");
+                    toast.success("Login Success!");
                     navigate("/search");
                 }
 

@@ -42,10 +42,10 @@ const Navbar: React.FC<Props> = (props:Props):JSX.Element => {
                 </div>
                 <div className="hidden lg:flex items-center space-x-6 text-back">
                     <button onClick={handleChangeTheme}><MdDarkMode /></button>
-                    <div className="hover:text-darkBlue dark:text-white">Login</div>
-                    <a href="" className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70 dark:text-slate-800">
+                    <Link to="/login" className="hover:text-darkBlue dark:text-white">Login</Link>
+                    <Link to="/register" className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70 dark:text-slate-800">
                         Signup
-                    </a>
+                    </Link>
                 </div>
             </div>
         </nav>
