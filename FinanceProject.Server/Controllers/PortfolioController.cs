@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceProject.Server.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PortfolioController : ControllerBase
     {

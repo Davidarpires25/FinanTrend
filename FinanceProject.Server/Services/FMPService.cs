@@ -28,7 +28,7 @@ namespace FinanceProject.Server.Services
                     if (stock != null) { 
                         return stock.ToStockFromFMP();
                     }
-                    return null
+                    return null;
                 }
             }
             catch (Exception e)

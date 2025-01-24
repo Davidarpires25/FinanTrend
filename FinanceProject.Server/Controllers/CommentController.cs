@@ -1,9 +1,11 @@
 ﻿using FinanceProject.Server.Data;
 using FinanceProject.Server.Dtos.Comment;
 using FinanceProject.Server.Extensions;
+using FinanceProject.Server.Helpers;
 using FinanceProject.Server.Interfaces;
 using FinanceProject.Server.Mappers;
 using FinanceProject.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,12 +31,13 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetComments()
+        [Authorize]
+        public async Task<IActionResult> GetComments([FromQuery] CommentQueryObject queryObject)
         {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
-            var comments = await _commentRepository.GetAllAsync();
+            var comments = await _commentRepository.GetAllAsync(queryObject);
             var commentsDto = comments.Select(c => c.ToCommentDto());
             return Ok(commentsDto);
         }

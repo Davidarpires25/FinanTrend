@@ -12,7 +12,7 @@ namespace FinanceProject.Server.Controllers
 {
 
     [ApiController]
-    [Route("api/Stock")]
+    [Route("api/[controller]")]
     public class StockController : Controller
     {
         private readonly ApplicationDBContext _dBContext;
@@ -26,7 +26,7 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Route("listaStocks")]
         public async Task<IActionResult> GetStocks([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
