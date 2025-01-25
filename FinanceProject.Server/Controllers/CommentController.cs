@@ -41,8 +41,9 @@ namespace FinanceProject.Server.Controllers
             var commentsDto = comments.Select(c => c.ToCommentDto());
             return Ok(commentsDto);
         }
-        [HttpGet("{id:int}")]
 
+        [HttpGet]
+        [Route("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id) {
 
             if (!ModelState.IsValid)
@@ -58,7 +59,8 @@ namespace FinanceProject.Server.Controllers
 
         }
 
-        [HttpPost("{symbol:alpha}")]
+        [HttpPost]
+        [Route("{symbol:alpha}")]
         public async Task<IActionResult> Create([FromRoute] string symbol, [FromBody] CreateCommentRequestDto commentDto)
         {
 
@@ -85,13 +87,14 @@ namespace FinanceProject.Server.Controllers
             var user = await _userManager.FindByNameAsync(userName);
 
             var commentModel = commentDto.ToCommentFromCreateDto(stock.Id);
-            commentModel.UserId = user.Id;
+            commentModel.AppUserId = user.Id;
             var createdComment = await _commentRepository.CreateAsync(commentModel);
             return CreatedAtAction(nameof(GetById), new { id = createdComment.Id }, createdComment.ToCommentDto());
         }
 
 
-        [HttpPut("{id:int}")]
+        [HttpPut]
+        [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto commentDto)
         {
             if (!ModelState.IsValid)
@@ -108,7 +111,8 @@ namespace FinanceProject.Server.Controllers
 
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete]
+        [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             if (!ModelState.IsValid)

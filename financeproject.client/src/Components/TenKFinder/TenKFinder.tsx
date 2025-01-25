@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { CompanyTenK } from '../../company';
-import TenKFinderItem from './TeknFinderItem/TenkFinderItem';
 import Spinner from '../Spinner/Spinner';
 import { getTenK } from '../../api';
+import TenKFinderItem from './TeknFinderItem/TenKFinderItem';
 
 
 interface Props {

@@ -13,7 +13,7 @@ namespace FinanceProject.Server.Models
         public int? StockId { get; set; }
         public Stock? Stock { get; set; } = null!; //Propiedad de navegacion
 
-        public string? UserId { get; set; }
-        public AppUser? AppUser { get; set; } = null!; //Propiedad de navegacion
+        public string AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }

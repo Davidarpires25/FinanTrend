@@ -91,7 +91,7 @@ const LoginPage: React.FC<Props> = (props: Props): JSX.Element => {
                                 </div>
                                 <a
                                     href="#"
-                                    className="text-sm text-white font-medium text-primary-600 hover:underline dark:text-primary-500"
+                                    className="text-sm text-gray-500 font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-white"
                                 >
                                     Forgot password?
                                 </a>

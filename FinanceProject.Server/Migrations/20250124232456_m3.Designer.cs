@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceProject.Server.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250122203444_m7")]
-    partial class m7
+    [Migration("20250124232456_m3")]
+    partial class m3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,7 @@ namespace FinanceProject.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
@@ -324,7 +325,9 @@ namespace FinanceProject.Server.Migrations
                 {
                     b.HasOne("FinanceProject.Server.Models.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FinanceProject.Server.Models.Stock", "Stock")
                         .WithMany("Comments")

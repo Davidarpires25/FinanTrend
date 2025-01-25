@@ -12,7 +12,7 @@ const Spinner: React.FC<Props> = ({isLoading = true}:Props):JSX.Element => {
 
     return (
         <div id="loading-spinner">
-            <ClipLoader color="#36d7b7" loading={isLoading} size={35} aria-labe="Loading Spinner" data-testid="loader" />
+            <ClipLoader color="#36d7b7" loading={isLoading} size={35} aria-label="Loading Spinner" data-testid="loader" />
             
         </div>
     );

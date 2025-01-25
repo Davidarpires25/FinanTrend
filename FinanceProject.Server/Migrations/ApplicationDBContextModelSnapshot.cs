@@ -96,6 +96,7 @@ namespace FinanceProject.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
@@ -321,7 +322,9 @@ namespace FinanceProject.Server.Migrations
                 {
                     b.HasOne("FinanceProject.Server.Models.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FinanceProject.Server.Models.Stock", "Stock")
                         .WithMany("Comments")

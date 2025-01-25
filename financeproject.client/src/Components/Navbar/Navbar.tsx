@@ -3,11 +3,12 @@ import React, {useState,useEffect} from 'react'
 import logo from './logoNabvar.png'
 import { Link } from 'react-router-dom';
 import { MdDarkMode } from 'react-icons/md';
+import { useAuth } from '../../Context/userAuth';
 
 interface Props { }
 
 const Navbar: React.FC<Props> = (props:Props):JSX.Element => {
-    const [theme, setTheme] = useState("light");
+    const [theme, setTheme] = useState("dark");
 
     useEffect(() => {
         if (theme === "dark") {
@@ -25,6 +26,7 @@ const Navbar: React.FC<Props> = (props:Props):JSX.Element => {
         setTheme((prevTheme) => prevTheme === "light" ? "dark" : "light");
     }
 
+    const { isLoggedIn,user,logout} = useAuth();
 
     return (
         <nav className="relative container mx-auto p-6">
@@ -40,13 +42,27 @@ const Navbar: React.FC<Props> = (props:Props):JSX.Element => {
                         </Link>
                     </div>
                 </div>
-                <div className="hidden lg:flex items-center space-x-6 text-back">
-                    <button onClick={handleChangeTheme}><MdDarkMode /></button>
-                    <Link to="/login" className="hover:text-darkBlue dark:text-white">Login</Link>
-                    <Link to="/register" className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70 dark:text-slate-800">
-                        Signup
-                    </Link>
-                </div>
+                {isLoggedIn() ? (
+                    <div className="hidden lg:flex items-center space-x-6 text-back">
+                        <button onClick={handleChangeTheme}><MdDarkMode /></button>
+                        <div className="hover:text-darkBlue dark:text-white">Welcome {user?.userName}</div>
+                        <a onClick={logout} className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70 dark:text-slate-800">
+                            Logout
+                        </a>
+                    </div>
+                
+                
+                ) : (
+                        <div className="hidden lg:flex items-center space-x-6 text-back">
+                            <button onClick={handleChangeTheme}><MdDarkMode /></button>
+                            <Link to="/login" className="hover:text-darkBlue dark:text-white">Login</Link>
+                            <Link to="/register" className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70 dark:text-slate-800">
+                                Signup
+                            </Link>
+                        </div>
+
+                    )}
+                
             </div>
         </nav>
     );
