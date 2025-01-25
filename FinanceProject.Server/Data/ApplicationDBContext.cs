@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FinanceProject.Server.Data
 {
@@ -20,11 +19,11 @@ namespace FinanceProject.Server.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Portfolio>().HasKey(x => new { x.UserId, x.StockId });
+            builder.Entity<Portfolio>().HasKey(x => new { x.AppUserId, x.StockId });
             builder.Entity<Portfolio>()
                 .HasOne(x=> x.AppUser)
                 .WithMany(x => x.Portfolios)
-                .HasForeignKey(x => x.UserId);
+                .HasForeignKey(x => x.AppUserId);
 
             builder.Entity<Portfolio>()
                 .HasOne(x => x.Stock)

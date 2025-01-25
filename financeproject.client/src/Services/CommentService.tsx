@@ -23,9 +23,13 @@ export const commentPostAPI = async (title: string, content: string, symbol: str
 
 
 export const commentGetAPI = async (symbol: string) => {
+    const token = localStorage.getItem('token');
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
     try {
 
-        const data = await axios.get<CommentGet[]>(api + `?Symbol=${symbol}`);
+        const data = await axios.get<CommentGet[]>(api + `?Symbol=${symbol}`,config);
 
         return data;
     } catch (error) {

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FinanceProject.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class m1 : Migration
+    public partial class m2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -186,8 +186,7 @@ namespace FinanceProject.Server.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StockId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -196,7 +195,8 @@ namespace FinanceProject.Server.Migrations
                         name: "FK_Comment_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comment_Stock_StockId",
                         column: x => x.StockId,
@@ -208,15 +208,15 @@ namespace FinanceProject.Server.Migrations
                 name: "Portfolios",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StockId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Portfolios", x => new { x.UserId, x.StockId });
+                    table.PrimaryKey("PK_Portfolios", x => new { x.AppUserId, x.StockId });
                     table.ForeignKey(
-                        name: "FK_Portfolios_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Portfolios_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);

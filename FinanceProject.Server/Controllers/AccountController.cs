@@ -1,6 +1,7 @@
 ﻿using FinanceProject.Server.Dtos.Account;
 using FinanceProject.Server.Interfaces;
 using FinanceProject.Server.Models;
+using FinanceProject.Server.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,83 +15,80 @@ namespace FinanceProject.Server.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _TokenService;
         private readonly SignInManager<AppUser> _SignInManager;
-        public AccountController(UserManager<AppUser> userManager,ITokenService Token, SignInManager<AppUser> SignInManager)
+        public AccountController(UserManager<AppUser> userManager, ITokenService Token, SignInManager<AppUser> SignInManager)
         {
             _userManager = userManager;
             _TokenService = Token;
             _SignInManager = SignInManager;
+        }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName.ToLower() == loginDto.UserName.ToLower());
+
+            if (user == null) return Unauthorized("Invalid username!");
+
+            var result = await _SignInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+            if (!result.Succeeded) return Unauthorized("Username not found and/or password incorrect");
+
+            return Ok(
+                new CreateUserDto
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Token = _TokenService.CreateToken(user)
+                }
+            );
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerDto)
         {
-            try
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (await _userManager.Users.AnyAsync(x => x.UserName.ToLower() == registerDto.UserName.ToLower()))
+                return BadRequest("Username is already taken");
+
+            if (await _userManager.Users.AnyAsync(x => x.Email.ToLower() == registerDto.Email.ToLower()))
+                return BadRequest("Email is already taken");
+
+            var appUser = new AppUser
             {
+                UserName = registerDto.UserName,
+                Email = registerDto.Email
+            };
 
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-                var account = new AppUser
-                {
-                    UserName = registerRequestDto.UserName,
-                    Email = registerRequestDto.Email
+            var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
 
-                };
-                var CreateUser = await _userManager.CreateAsync(account, registerRequestDto.Password);
-                if (CreateUser.Succeeded)
+            if (createdUser.Succeeded)
+            {
+                var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
+                if (roleResult.Succeeded)
                 {
-
-                    var roleResult = await _userManager.AddToRoleAsync(account, "User");
-                    if (!roleResult.Succeeded)
-                    {
-                        return StatusCode(500, roleResult.Errors);
-                    }
-                    return Ok(new CreateUserDto {
-                        UserName = account.UserName,
-                        Email = account.Email,
-                        Token= _TokenService.CreateToken(account)
-                    });
+                    return Ok(
+                        new CreateUserDto
+                        {
+                            UserName = appUser.UserName,
+                            Email = appUser.Email,
+                            Token = _TokenService.CreateToken(appUser)
+                        }
+                    );
                 }
                 else
                 {
-                    return StatusCode(500, CreateUser.Errors);
+                    return StatusCode(500, roleResult.Errors);
                 }
-
             }
-            catch (Exception ex)
+            else
             {
-                return StatusCode(500, ex.Message);
-
+                return StatusCode(500, createdUser.Errors);
             }
-
-        }
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto ) { 
-
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-                
-            }
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == loginDto.UserName);
-            if (user == null)
-            {
-                return Unauthorized("Invalid UserName");
-            }
-            var result = await _SignInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-
-            if (!result.Succeeded)
-            {
-                return Unauthorized("Username Not Found And/Or Password Incorrect");
-            }
-            return Ok(new CreateUserDto
-            {
-                UserName = user.UserName,
-                Email = user.Email,
-                Token = _TokenService.CreateToken(user)
-            });
         }
     }
 }

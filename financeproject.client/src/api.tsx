@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { CompanyBalanceSheet, CompanyCashFlow, CompanyCompData, CompanyIncomeStatement, CompanyKeyMetrics, CompanyProfile, CompanySearch, CompanyTenK } from './company';
-
+const apikey ='f3CT849ODIbNzQt9bZALDtQj42dj5OKb'
 interface SearchResponse {
     data: CompanySearch[];
 }
@@ -8,7 +8,7 @@ interface SearchResponse {
 export const searchCompanies = async (query: string) => {
   try {
     const data = await axios.get<SearchResponse>(
-        `https://financialmodelingprep.com/api/v3/search?query=${query}&apikey=rMs8Nqnv02GzhIMaoKRCAWRAnG7yu2mu`
+        `https://financialmodelingprep.com/api/v3/search?query=${query}&apikey=${apikey}`
     );
     return data;
   } catch (error) {
@@ -26,7 +26,7 @@ export const searchCompanies = async (query: string) => {
 export const getCompanyProfile = async (query:string) => {
     try {
         const data = await axios.get<CompanyProfile>(
-            `https://financialmodelingprep.com/api/v3/profile/${query}?&apikey=rMs8Nqnv02GzhIMaoKRCAWRAnG7yu2mu`
+            `https://financialmodelingprep.com/api/v3/profile/${query}?&apikey=${apikey}`
         );
 
         return data;
@@ -40,7 +40,7 @@ export const getCompanyProfile = async (query:string) => {
 export const getKeyMetrics = async (query: string) => {
     try {
         const data = await axios.get<CompanyKeyMetrics[]>(
-            `https://financialmodelingprep.com/api/v3/key-metrics-ttm/${query}?&apikey=rMs8Nqnv02GzhIMaoKRCAWRAnG7yu2mu`
+            `https://financialmodelingprep.com/api/v3/key-metrics-ttm/${query}?&apikey=${apikey}`
         );
        
         return data;
@@ -53,7 +53,7 @@ export const getKeyMetrics = async (query: string) => {
 export const getIncomeStatement = async (query: string) => {
     try {
         const data = await axios.get<CompanyIncomeStatement[]>(
-            `https://financialmodelingprep.com/api/v3/income-statement/${query}?period=annual&apikey=rMs8Nqnv02GzhIMaoKRCAWRAnG7yu2mu`
+            `https://financialmodelingprep.com/api/v3/income-statement/${query}?period=annual&apikey=${apikey}`
         );
 
         return data;
@@ -66,7 +66,7 @@ export const getIncomeStatement = async (query: string) => {
 export const getBalanceSheet = async (query: string) => {
     try {
         const data = await axios.get<CompanyBalanceSheet[]>(
-            `https://financialmodelingprep.com/api/v3/balance-sheet-statement/${query}?period=annual&apikey=rMs8Nqnv02GzhIMaoKRCAWRAnG7yu2mu`
+            `https://financialmodelingprep.com/api/v3/balance-sheet-statement/${query}?period=annual&apikey=${apikey}`
         );
 
         return data;
@@ -79,7 +79,7 @@ export const getBalanceSheet = async (query: string) => {
 export const getCashFlowStatement = async (query: string) => {
     try {
         const data = await axios.get<CompanyCashFlow[]>(
-            `https://financialmodelingprep.com/api/v3/cash-flow-statement/${query}?period=annual&apikey=rMs8Nqnv02GzhIMaoKRCAWRAnG7yu2mu`
+            `https://financialmodelingprep.com/api/v3/cash-flow-statement/${query}?period=annual&apikey=${apikey}`
         );
 
         return data;
@@ -92,7 +92,7 @@ export const getCashFlowStatement = async (query: string) => {
 export const getCompData = async (query: string) => {
     try {
         const data = await axios.get<CompanyCompData[]>(
-            `https://financialmodelingprep.com/api/v3/stock_peers?symbol=${query}&apikey=rMs8Nqnv02GzhIMaoKRCAWRAnG7yu2mu`
+            `https://financialmodelingprep.com/api/v3/stock_peers?symbol=${query}&apikey=${apikey}`
         );
 
         return data;
@@ -106,7 +106,7 @@ export const getCompData = async (query: string) => {
 export const getTenK = async (query: string) => {
     try {
         const data = await axios.get<CompanyTenK[]>(
-            `https://financialmodelingprep.com/api/v3/sec_filings/${query}?type=10-K&page=0&apikey=rMs8Nqnv02GzhIMaoKRCAWRAnG7yu2mu`
+            `https://financialmodelingprep.com/api/v3/sec_filings/${query}?type=10-K&page=0&apikey=${apikey}`
         );
         return data;
     } catch (error: any) {
@@ -117,7 +117,7 @@ export const getTenK = async (query: string) => {
 export const getHistoricalDividend = async (query: string) => {
     try {
         const data = await axios.get<CompanyHistoricalDividend>(
-            `https://financialmodelingprep.com/api/v3/historical-price-full/stock_dividend/${query}?apikey=rMs8Nqnv02GzhIMaoKRCAWRAnG7yu2mu`
+            `https://financialmodelingprep.com/api/v3/historical-price-full/stock_dividend/${query}?apikey=${apikey}`
         );
         return data;
     } catch (error: any) {

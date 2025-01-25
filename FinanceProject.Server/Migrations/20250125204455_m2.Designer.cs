@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinanceProject.Server.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250124222658_m1")]
-    partial class m1
+    [Migration("20250125204455_m2")]
+    partial class m2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,6 +99,7 @@ namespace FinanceProject.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
@@ -115,9 +116,6 @@ namespace FinanceProject.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
@@ -129,13 +127,13 @@ namespace FinanceProject.Server.Migrations
 
             modelBuilder.Entity("FinanceProject.Server.Models.Portfolio", b =>
                 {
-                    b.Property<string>("UserId")
+                    b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("StockId")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "StockId");
+                    b.HasKey("AppUserId", "StockId");
 
                     b.HasIndex("StockId");
 
@@ -327,7 +325,9 @@ namespace FinanceProject.Server.Migrations
                 {
                     b.HasOne("FinanceProject.Server.Models.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("FinanceProject.Server.Models.Stock", "Stock")
                         .WithMany("Comments")
@@ -340,15 +340,15 @@ namespace FinanceProject.Server.Migrations
 
             modelBuilder.Entity("FinanceProject.Server.Models.Portfolio", b =>
                 {
-                    b.HasOne("FinanceProject.Server.Models.Stock", "Stock")
+                    b.HasOne("FinanceProject.Server.Models.AppUser", "AppUser")
                         .WithMany("Portfolios")
-                        .HasForeignKey("StockId")
+                        .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FinanceProject.Server.Models.AppUser", "AppUser")
+                    b.HasOne("FinanceProject.Server.Models.Stock", "Stock")
                         .WithMany("Portfolios")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("StockId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

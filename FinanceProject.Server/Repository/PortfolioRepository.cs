@@ -14,7 +14,7 @@ namespace FinanceProject.Server.Repository
         }
         public  async Task<List<Stock>> GetUserPortfolio(AppUser user)
         {
-            return await _dBContext.Portfolios.Where(x => x.UserId == user.Id).
+            return await _dBContext.Portfolios.Where(x => x.AppUserId == user.Id).
                 Select(stock => 
                     new Stock
                     {
@@ -46,7 +46,7 @@ namespace FinanceProject.Server.Repository
         public async Task<Portfolio?> DeletePortfolio(AppUser user, string symbol)
         {
 
-            var portfolioModel = await _dBContext.Portfolios.FirstOrDefaultAsync(x => x.UserId == user.Id && x.Stock.Symbol == symbol);
+            var portfolioModel = await _dBContext.Portfolios.FirstOrDefaultAsync(x => x.AppUserId == user.Id && x.Stock.Symbol == symbol);
             
 
             if(portfolioModel == null)

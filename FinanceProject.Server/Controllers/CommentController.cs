@@ -1,4 +1,7 @@
-﻿using FinanceProject.Server.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using FinanceProject.Server.Dtos.Comment;
 using FinanceProject.Server.Extensions;
 using FinanceProject.Server.Helpers;
@@ -31,7 +34,7 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+
         public async Task<IActionResult> GetComments([FromQuery] CommentQueryObject queryObject)
         {
             if (!ModelState.IsValid) {

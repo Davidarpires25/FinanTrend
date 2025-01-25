@@ -16,7 +16,6 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
-
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -29,28 +28,32 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 12;
-}).AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
+})
+.AddEntityFrameworkStores<ApplicationDBContext>();
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme =
+    options.DefaultChallengeScheme =
+    options.DefaultForbidScheme =
+    options.DefaultScheme =
+    options.DefaultSignInScheme =
     options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer( options => {
+}).AddJwtBearer(options =>
+{
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidateAudience = true,
         ValidAudience = builder.Configuration["JWT:Audience"],
-        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
+        )
     };
 });
+
 
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
@@ -58,6 +61,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 builder.Services.AddScoped<IFMPService, FMPService>();
 builder.Services.AddHttpClient<IFMPService, FMPService>();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -87,7 +91,7 @@ app.UseCors( x => {x
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
-    .WithOrigins("https://localhost:62234'")
+    //.WithOrigins("https://localhost:62234'")
     .SetIsOriginAllowed(origin => true);
 }
     );

@@ -124,13 +124,13 @@ namespace FinanceProject.Server.Migrations
 
             modelBuilder.Entity("FinanceProject.Server.Models.Portfolio", b =>
                 {
-                    b.Property<string>("UserId")
+                    b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("StockId")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "StockId");
+                    b.HasKey("AppUserId", "StockId");
 
                     b.HasIndex("StockId");
 
@@ -337,15 +337,15 @@ namespace FinanceProject.Server.Migrations
 
             modelBuilder.Entity("FinanceProject.Server.Models.Portfolio", b =>
                 {
-                    b.HasOne("FinanceProject.Server.Models.Stock", "Stock")
+                    b.HasOne("FinanceProject.Server.Models.AppUser", "AppUser")
                         .WithMany("Portfolios")
-                        .HasForeignKey("StockId")
+                        .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FinanceProject.Server.Models.AppUser", "AppUser")
+                    b.HasOne("FinanceProject.Server.Models.Stock", "Stock")
                         .WithMany("Portfolios")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("StockId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

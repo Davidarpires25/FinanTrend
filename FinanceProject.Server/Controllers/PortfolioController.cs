@@ -1,4 +1,5 @@
-﻿using FinanceProject.Server.Extensions;
+﻿using FinanceProject.Server.Dtos.Stock;
+using FinanceProject.Server.Extensions;
 using FinanceProject.Server.Interfaces;
 using FinanceProject.Server.Models;
 using FinanceProject.Server.Services;
@@ -27,7 +28,6 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetUserPortfolio() {
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
@@ -36,20 +36,20 @@ namespace FinanceProject.Server.Controllers
 
 
         }
-        [HttpPost]
-        [Authorize]
 
-        public async Task<IActionResult> AddPortfolio([FromBody] string symbol) {
+        [HttpPost]
+        public async Task<IActionResult> AddPortfolio(string symbol)
+        {
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);
-            var stock= await _stockRepository.GetBySymbolAsync(symbol);
-
+            var stock = await _stockRepository.GetBySymbolAsync(symbol);
 
             if (stock == null)
             {
                 stock = await _fMPService.FindStockBySymbolAsync(symbol);
                 if (stock == null)
                 {
+                    Console.WriteLine("Stock does not exist");
                     return BadRequest("Stock does not exist");
                 }
                 else
@@ -57,34 +57,36 @@ namespace FinanceProject.Server.Controllers
                     await _stockRepository.CreateAsync(stock);
                 }
             }
-          
+
             var userPortfolio = await _portfolioRepository.GetUserPortfolio(appUser);
             if (userPortfolio.Any(p => p.Symbol.ToLower() == symbol.ToLower()))
             {
+                Console.WriteLine("Stock already in portfolio");
                 return BadRequest("Stock already in portfolio");
             }
 
             var portfolioModel = new Portfolio
             {
                 StockId = stock.Id,
-                UserId = appUser.Id,
-                AppUser= appUser,
-                Stock= stock,
-
+                AppUserId = appUser.Id,
+                AppUser = appUser,
+                Stock = stock,
             };
 
             await _portfolioRepository.CreatePortfolio(portfolioModel);
 
-            if (portfolioModel == null) {
+            if (portfolioModel == null)
+            {
+                Console.WriteLine("Error creating portfolio 500");
                 return StatusCode(500, "Error creating portfolio");
             }
 
-            return Ok(portfolioModel);
-
+            Console.WriteLine("Portfolio created successfully");
+            return StatusCode(StatusCodes.Status200OK, portfolioModel);
         }
 
         [HttpDelete]
-        [Authorize]
+  
         public async Task<IActionResult> DeletePortfolio(string symbol) {
             var username = User.GetUsername();
             var appUser = await _userManager.FindByNameAsync(username);

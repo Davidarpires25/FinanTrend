@@ -6,11 +6,11 @@ namespace FinanceProject.Server.Dtos.Account
     {
         [Required]
         public string? UserName { get; set; }
-        [Required]
 
+        [Required]
         public string? Email { get; set; }
-        [Required]
 
+        [Required]
         public string? Password { get; set; }
     }
 }
