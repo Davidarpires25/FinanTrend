@@ -27,6 +27,7 @@ namespace FinanceProject.Server.Controllers
 
         [HttpGet]
         [Route("listaStocks")]
+        [Authorize]
         public async Task<IActionResult> GetStocks([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
@@ -43,6 +44,7 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id) {
             
             if (!ModelState.IsValid)
@@ -59,7 +61,7 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpPost]
-
+        [Authorize]
         public async Task<IActionResult> setStock([FromBody] CreateStockRequestDto stockDto) {
 
             if (!ModelState.IsValid)
@@ -75,6 +77,7 @@ namespace FinanceProject.Server.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> updateStock([FromRoute] int id, [FromBody] UpdateStockRequestDto stockDto) {
 
             if (!ModelState.IsValid)

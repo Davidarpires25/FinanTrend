@@ -46,33 +46,28 @@ export default defineConfig({
         }
     },
     server: {
-        /*proxy: {
-            '/api/account': {
-                target: target,
-                changeOrigin: true,
+        proxy: {
+            '/api/Account': {
+                target: target,          
                 secure: false,
             },
-            '/api/stock': {
+            '/api/Stock': {
                 target: target,
-                changeOrigin: true, 
                 secure: false,
             },
-            '^/api/comment': {
+            '^/api/Comment': {
                 target: target,
-                changeOrigin: true,
                 secure: false
             },
             '^/swagger': { 
                 target: target,
-                changeOrigin: true,
                 secure: false
             },
             '^/openapi': { 
                 target: target,
-                changeOrigin: true,
                 secure: false
             }
-        },*/
+        },
         port: 62234,
         https: {
             key: fs.readFileSync(keyFilePath),

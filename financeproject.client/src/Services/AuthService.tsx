@@ -7,7 +7,7 @@ const api = "https://localhost:7211/api/";
 
 export const loginAPI = async (username: string, password: string) => {
     try {
-        const data = await axios.post<UserProfileToken>(api + "account/login", {
+        const data = await axios.post<UserProfileToken>(api + "Account/login", {
             username: username,
             password: password,
         });
@@ -19,7 +19,7 @@ export const loginAPI = async (username: string, password: string) => {
 
 export const registerAPI = async (email: string, username: string, password: string) => {
     try {
-        const data = await axios.post<UserProfileToken>(api + "account/register", {
+        const data = await axios.post<UserProfileToken>(api + "Account/register", {
             email: email,
             username: username,
             password: password,

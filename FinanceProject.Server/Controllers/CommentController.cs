@@ -34,7 +34,7 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpGet]
-
+        [Authorize]
         public async Task<IActionResult> GetComments([FromQuery] CommentQueryObject queryObject)
         {
             if (!ModelState.IsValid) {
@@ -47,6 +47,7 @@ namespace FinanceProject.Server.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int id) {
 
             if (!ModelState.IsValid)
@@ -64,6 +65,7 @@ namespace FinanceProject.Server.Controllers
 
         [HttpPost]
         [Route("{symbol:alpha}")]
+        [Authorize]
         public async Task<IActionResult> Create([FromRoute] string symbol, [FromBody] CreateCommentRequestDto commentDto)
         {
 
@@ -98,6 +100,7 @@ namespace FinanceProject.Server.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto commentDto)
         {
             if (!ModelState.IsValid)
@@ -116,6 +119,7 @@ namespace FinanceProject.Server.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             if (!ModelState.IsValid)

@@ -96,7 +96,6 @@ app.UseCors( x => {x
 }
     );
 
-app.UseAuthorization();
 
 app.UseAuthentication();
 app.UseAuthorization();

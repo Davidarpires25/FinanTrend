@@ -1,4 +1,5 @@
-﻿using FinanceProject.Server.Dtos.Stock;
+﻿using System.Security.Claims;
+using FinanceProject.Server.Dtos.Stock;
 using FinanceProject.Server.Extensions;
 using FinanceProject.Server.Interfaces;
 using FinanceProject.Server.Models;
@@ -28,9 +29,16 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetUserPortfolio() {
-            var username = User.GetUsername();
+            var user=HttpContext.User;
+            var username = user.FindFirst(ClaimTypes.GivenName)?.Value;
+            if (string.IsNullOrEmpty(username))
+            {
+                return Unauthorized("Invalid token."); 
+            }
             var appUser = await _userManager.FindByNameAsync(username);
+          
             var userPortfolio = await _portfolioRepository.GetUserPortfolio(appUser);
             return Ok(userPortfolio);
 
@@ -38,9 +46,11 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddPortfolio(string symbol)
         {
-            var username = User.GetUsername();
+            var user = HttpContext.User;
+            var username = user.FindFirst(ClaimTypes.GivenName)?.Value;
             var appUser = await _userManager.FindByNameAsync(username);
             var stock = await _stockRepository.GetBySymbolAsync(symbol);
 
@@ -86,9 +96,10 @@ namespace FinanceProject.Server.Controllers
         }
 
         [HttpDelete]
-  
+        [Authorize]
         public async Task<IActionResult> DeletePortfolio(string symbol) {
-            var username = User.GetUsername();
+            var user = HttpContext.User;
+            var username = user.FindFirst(ClaimTypes.GivenName)?.Value;
             var appUser = await _userManager.FindByNameAsync(username);
             var stock = await _stockRepository.GetBySymbolAsync(symbol);
             var listStock = await _portfolioRepository.GetUserPortfolio(appUser);
