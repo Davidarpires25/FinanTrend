@@ -9,12 +9,11 @@ import { searchCompanies } from "../../api";
 import { portfolioGetAPI, portfolioAddAPI, portfolioDeleteAPI } from "../../Services/PortfolioService";
 
 
-type Props = {
-}
 
 
 
-const SearchPage: React.FC<Props> = (props:Props): JSX.Element => {
+
+const SearchPage: React.FC = (): JSX.Element => {
     const [search, setSearch] = useState<string>("");
     const [portfolioValues, setPortfolioValues] = useState<PortfolioGet[] | null>([]);
     const [searchResult, setSearchResult] = useState<CompanySearch[]>([]);
@@ -36,6 +35,7 @@ const SearchPage: React.FC<Props> = (props:Props): JSX.Element => {
                 }
             })
             .catch((e) => {
+                console.log(e)
                 setPortfolioValues(null);
             });
     };
@@ -45,7 +45,7 @@ const SearchPage: React.FC<Props> = (props:Props): JSX.Element => {
         portfolioAddAPI(e.target[0].value)
             .then((res) => {
          
-                    toast.success("Stock added to portfolio!");
+                    toast.success("Stock added to portfolio!",res);
                     getPortfolio(); // Actualiza el portafolio después de agregar
                 
             })
@@ -75,12 +75,12 @@ const SearchPage: React.FC<Props> = (props:Props): JSX.Element => {
     };
 
     return (
-        <>
+        <div className= " min-h-screen">
             <Search onSearchSubmit={onSearchSubmit} search={search} handleSearchChange={handleSearchChange} />
             <ListPortfolio portfolioValues={portfolioValues!} onPortfolioDelete={onPortfolioDelete} />
             <CardList searchResults={searchResult} onPortFolioCreate={onPortfolioCreate} />
             {serverError && <div className="dark:text-white">Unable to connect to API</div>}
-        </>
+        </div >
     );
 };
 

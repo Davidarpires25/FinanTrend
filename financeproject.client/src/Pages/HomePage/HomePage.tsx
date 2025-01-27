@@ -8,9 +8,9 @@ interface Props { }
 const HomePage: React.FC<Props> = (props: Props):JSX.Element => {
 
     return (
-        <div >
+       
             <Hero></Hero>
-        </div>
+       
     )
 
 }

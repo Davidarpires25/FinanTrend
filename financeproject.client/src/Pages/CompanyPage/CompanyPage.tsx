@@ -10,11 +10,11 @@ import CompFinder from '../../Components/CompFinder/CompFinder';
 import TenKFinder from '../../Components/TenKFinder/TenKFinder';
 
 
-interface Props {
 
-}
 
-const CompanyPage: React.FC<Props> = (props: Props): JSX.Element => {
+
+
+const CompanyPage: React.FC = (): JSX.Element => {
     const { ticker } = useParams();
     const [company, setCompany] = useState<CompanyProfile>();
 
@@ -36,7 +36,7 @@ const CompanyPage: React.FC<Props> = (props: Props): JSX.Element => {
     return (
         <div>
             {company ? (
-                <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden dark:bg-darkBg">
+                <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden dark:bg-gray-900">
 
                   <Sidebar></Sidebar>
                     <CompanyDashboard ticker={ticker!}>

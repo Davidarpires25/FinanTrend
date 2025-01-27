@@ -14,7 +14,6 @@ function App() {
     return (
             <UserProvider>
             <div className="App min-h-screen dark:bg-darkBg">
-
                 <Navbar />
                 <Outlet />
                 <ToastContainer />

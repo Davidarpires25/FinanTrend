@@ -7,7 +7,7 @@ import Spinner from '../Spinner/Spinner';
 import { formatLargeNonMonetaryNumber, formatRatio } from '../Helpers/NumberFormatting';
 import StockComment from '../StockComment/StockComment';
 
-interface Props { }
+
 
 
 const tableConfig = [
@@ -81,7 +81,7 @@ const tableConfig = [
 
 
 
-const CompanyProfile: React.FC<Props> = (props: Props): JSX.Element => {
+const CompanyProfile: React.FC = (): JSX.Element => {
     const ticker = useOutletContext<string>();
     const [companyData, setCompanyData] = useState<CompanyKeyMetrics>()
 

@@ -16,6 +16,7 @@ export default {
                 lightBlue: "hsl(215.02, 98.39%, 51.18%)",
                 darkBlue: "hsl(213.86, 58.82%, 46.67%)",
                 lightGreen: "hsl(156.62, 73.33%, 58.82%)",
+                lightAmber: "hsl(45, 100%, 75%)",
                 darkBg: '#1a202c',
                 darkCard: '#2d3748'
 

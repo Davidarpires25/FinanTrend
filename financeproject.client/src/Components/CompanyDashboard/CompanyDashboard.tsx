@@ -9,7 +9,7 @@ const CompanyDashboard: React.FC<Props> = ({ children, ticker }: Props): JSX.Ele
 
     
     return (
-        <div className="relative md:ml-64 bg-blueGray-100 w-full ">
+        <div className="relative  md:ml-64 bg-blueGray-100 w-full h-full">
             <div className="relative pt-20 pb-32 bg-lightBlue-500">
                 <div className="px-4 md:px-6 mx-auto w-full">
                     <div>

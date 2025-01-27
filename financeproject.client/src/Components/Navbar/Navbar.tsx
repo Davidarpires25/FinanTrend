@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { MdDarkMode } from 'react-icons/md';
 import { useAuth } from '../../Context/userAuth';
 
-interface Props { }
 
-const Navbar: React.FC<Props> = (props:Props):JSX.Element => {
+
+const Navbar: React.FC = ():JSX.Element => {
     const [theme, setTheme] = useState("dark");
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const Navbar: React.FC<Props> = (props:Props):JSX.Element => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-20">
                     <Link to="/">
-                        <img src={logo} alt="" />
+                        <img src={logo} alt="logo" />
 
                     </Link>
                     <div className="hidden font-bold lg:flex">
@@ -46,7 +46,7 @@ const Navbar: React.FC<Props> = (props:Props):JSX.Element => {
                     <div className="hidden lg:flex items-center space-x-6 text-back">
                         <button onClick={handleChangeTheme}><MdDarkMode /></button>
                         <div className="hover:text-darkBlue dark:text-white">Welcome {user?.userName}</div>
-                        <a onClick={logout} className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70 dark:text-slate-800">
+                        <a onClick={logout} className="px-8 py-3 font-bold rounded text-white bg-lightAmber hover:opacity-70 dark:text-slate-800">
                             Logout
                         </a>
                     </div>
@@ -56,7 +56,7 @@ const Navbar: React.FC<Props> = (props:Props):JSX.Element => {
                         <div className="hidden lg:flex items-center space-x-6 text-back">
                             <button onClick={handleChangeTheme}><MdDarkMode /></button>
                             <Link to="/login" className="hover:text-darkBlue dark:text-white">Login</Link>
-                            <Link to="/register" className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70 dark:text-slate-800">
+                            <Link to="/register" className="px-8 py-3 font-bold rounded text-white bg-lightAmber hover:opacity-70 dark:text-slate-800">
                                 Signup
                             </Link>
                         </div>
