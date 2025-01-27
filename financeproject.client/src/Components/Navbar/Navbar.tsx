@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react'
 
-import logo from './logoNabvar.png'
+import logo from './image-Photoroom.png'
 import { Link } from 'react-router-dom';
 import { MdDarkMode } from 'react-icons/md';
 import { useAuth } from '../../Context/userAuth';
