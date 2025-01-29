@@ -38,17 +38,22 @@ const CompanyPage: React.FC = (): JSX.Element => {
             {company ? (
                 <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden dark:bg-gray-900">
 
-                  <Sidebar></Sidebar>
+                    <Sidebar></Sidebar>
+                    
                     <CompanyDashboard ticker={ticker!}>
+                        <div className="flex flex-row p-10">
+                            <img src={company.image}></img>
+                            <p className="bg-white shadow rounded text.medium text-gray-900 p-3 mt-1 mt-4 ml-2  dark:bg-gray-900 dark:text-white">
+                                {company.description}
+                            </p>
+                        </div>
                         <Tile title="Company Title" subTitle={company.companyName}></Tile>
                         <Tile title="Price" subTitle={'$' + company.price.toString()}></Tile>
                         <Tile title="DCF" subTitle={"$" + company.dcf.toString()}></Tile>
                         <Tile title="Sector" subTitle={company.sector}></Tile>
-                        <CompFinder ticker={company.symbol} />
+                        
                         <TenKFinder ticker={company.symbol} />
-                        <p className="bg-white shadow rounded text.medium text-gray-900 p-3 mt-1 mt-4  dark:bg-darkBg dark:text-white">
-                            {company.description}
-                        </p>
+                        <CompFinder ticker={company.symbol} />
 
                     </CompanyDashboard>
 

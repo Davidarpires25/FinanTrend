@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { CompanyBalanceSheet, CompanyCashFlow, CompanyCompData, CompanyIncomeStatement, CompanyKeyMetrics, CompanyProfile, CompanySearch, CompanyTenK } from './company';
-const apikey ='f3CT849ODIbNzQt9bZALDtQj42dj5OKb'
+const apikey ='dfQNvP1N7VeryiKLUGzrlZWfQA6ot2hN'
 interface SearchResponse {
     data: CompanySearch[];
 }

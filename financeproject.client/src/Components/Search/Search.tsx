@@ -17,7 +17,7 @@ const ModernSearch: React.FC<Props> = ({ search, onSearchSubmit, handleSearchCha
 
 
   return (
-      <section className="  ">
+      
       <div className="w-full max-w-2xl mx-auto p-4">
         <form onSubmit={onSearchSubmit} className="relative">
           <div className="relative">
@@ -38,7 +38,7 @@ const ModernSearch: React.FC<Props> = ({ search, onSearchSubmit, handleSearchCha
           </div>
         </form>
       </div>
-    </section>
+  
   )
 }
 
