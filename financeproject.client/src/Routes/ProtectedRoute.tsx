@@ -1,4 +1,4 @@
-import React, {  ReactNode } from 'react'
+import React from 'react'
 import { useAuth } from '../Context/userAuth';
 import {Navigate, useLocation } from 'react-router-dom';
 
@@ -12,17 +12,15 @@ const ProtectedRoute: React.FC<Props> = ({ children }: Props): JSX.Element => {
 
     return (
 
-        <>
-            (
+        <>         
             {
                 isLoggedIn() ?
                     (
                         <>{children}</>
                     ) : (
                         <Navigate to="/login" state={{ from: location }} replace></Navigate>
-                    )};
-
-            );
+                    )
+            }
 
         </>
     );

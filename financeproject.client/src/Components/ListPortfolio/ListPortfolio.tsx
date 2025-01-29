@@ -25,7 +25,7 @@ const ListPortfolio: React.FC<Props> = ({ portfolioValues, onPortfolioDelete }: 
                                 />
                             );
                         })
-                    ) : (
+                    ):(
                         <h3 className="mb-3 mt-3 text-xl font-semibold text-center md:text-xl dark:text-white">
                             Your portfolio is empty.
                         </h3>

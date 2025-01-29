@@ -75,7 +75,7 @@ const SearchPage: React.FC = (): JSX.Element => {
     };
 
     return (
-        <div className= " min-h-screen">
+        <div className= "min-h-screen">
             <Search onSearchSubmit={onSearchSubmit} search={search} handleSearchChange={handleSearchChange} />
             <ListPortfolio portfolioValues={portfolioValues!} onPortfolioDelete={onPortfolioDelete} />
             <CardList searchResults={searchResult} onPortFolioCreate={onPortfolioCreate} />
