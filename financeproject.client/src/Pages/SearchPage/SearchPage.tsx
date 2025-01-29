@@ -7,6 +7,8 @@ import Search from "../../Components/Search/Search";
 import { PortfolioGet } from "../../Models/Portfolio";
 import { searchCompanies } from "../../api";
 import { portfolioGetAPI, portfolioAddAPI, portfolioDeleteAPI } from "../../Services/PortfolioService";
+import ModernSearch from "../../Components/Search/Search";
+import { useParams } from "react-router-dom";
 
 
 
@@ -14,7 +16,7 @@ import { portfolioGetAPI, portfolioAddAPI, portfolioDeleteAPI } from "../../Serv
 
 
 const SearchPage: React.FC = (): JSX.Element => {
-    const [search, setSearch] = useState<string>("");
+    const { ticker } = useParams();
     const [portfolioValues, setPortfolioValues] = useState<PortfolioGet[] | null>([]);
     const [searchResult, setSearchResult] = useState<CompanySearch[]>([]);
     const [serverError, setServerError] = useState<string | null>(null);
@@ -23,10 +25,11 @@ const SearchPage: React.FC = (): JSX.Element => {
         getPortfolio();
     }, []);
 
-    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearch(e.target.value);
-    };
 
+    useEffect(() => {
+        SearchCompany();
+    }, [ticker])
+   
     const getPortfolio = () => {
         portfolioGetAPI()
             .then((res) => {
@@ -64,9 +67,8 @@ const SearchPage: React.FC = (): JSX.Element => {
         });
     };
 
-    const onSearchSubmit = async (e: SyntheticEvent) => {
-        e.preventDefault();
-        const result = await searchCompanies(search);
+    const SearchCompany = async () => {
+        const result = await searchCompanies(ticker!);
         if (typeof result === "string") {
             setServerError(result);
         } else if (Array.isArray(result.data)) {
@@ -76,7 +78,6 @@ const SearchPage: React.FC = (): JSX.Element => {
 
     return (
         <div className= "min-h-screen">
-            <Search onSearchSubmit={onSearchSubmit} search={search} handleSearchChange={handleSearchChange} />
             <ListPortfolio portfolioValues={portfolioValues!} onPortfolioDelete={onPortfolioDelete} />
             <CardList searchResults={searchResult} onPortFolioCreate={onPortfolioCreate} />
             {serverError && <div className="dark:text-white">Unable to connect to API</div>}

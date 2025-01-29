@@ -27,7 +27,10 @@ export const router = createBrowserRouter([
                 path: "register", element: <RegisterPage />
             },
             {
-                path: "search", element: <ProtectedRoute><SearchPage/></ProtectedRoute>
+                path: "search/", element: <ProtectedRoute><SearchPage /></ProtectedRoute>
+            },
+            {
+                path: "search/:ticker", element: <ProtectedRoute><SearchPage/></ProtectedRoute>
             },
             {
                 path: "desing-guide", element: <ProtectedRoute><DesingPage/></ProtectedRoute>

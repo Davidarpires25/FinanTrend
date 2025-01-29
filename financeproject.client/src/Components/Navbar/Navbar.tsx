@@ -1,14 +1,20 @@
-import React, {useState,useEffect} from 'react'
+import React, {useState,useEffect, ChangeEvent, SyntheticEvent} from 'react'
 
 import logo from './image-Photoroom.png'
 import { Link } from 'react-router-dom';
 import { MdDarkMode } from 'react-icons/md';
 import { useAuth } from '../../Context/userAuth';
+import ModernSearch from '../Search/Search';
+import { useNavigate } from "react-router-dom"
 
 
 
 const Navbar: React.FC = ():JSX.Element => {
     const [theme, setTheme] = useState("dark");
+    const [search, setSearch] = useState<string>("");
+    const navigate = useNavigate();
+
+
 
     useEffect(() => {
         if (theme === "dark") {
@@ -26,7 +32,18 @@ const Navbar: React.FC = ():JSX.Element => {
         setTheme((prevTheme) => prevTheme === "light" ? "dark" : "light");
     }
 
-    const { isLoggedIn,user,logout} = useAuth();
+    const { isLoggedIn, user, logout } = useAuth();
+
+    const onSearchSubmit = async (e: SyntheticEvent) => { 
+
+        e.preventDefault();
+        navigate(`/search/${search}`);
+        
+    };
+
+    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value);
+    };
 
     return (
         <nav className="relative container mx-auto p-6">
@@ -36,13 +53,18 @@ const Navbar: React.FC = ():JSX.Element => {
                         <img src={logo} alt="logo" />
 
                     </Link>
-                    <div className="hidden font-bold lg:flex">
-                        <Link to="/search" className="text-black hover:text-darkBlue dark:text-white">
-                            Dashboard
-                        </Link>
-                    </div>
+                    <Link to="/search" className="text-black hover:text-darkBlue dark:text-white">
+                        Dashboard
+                    </Link>
+                    {isLoggedIn() ? (
+                        <ModernSearch onSearchSubmit={onSearchSubmit} search={search} handleSearchChange={handleSearchChange}></ModernSearch>
+
+
+                    ) : ("")}
+
                 </div>
                 {isLoggedIn() ? (
+                     
                     <div className="hidden lg:flex items-center space-x-6 text-back">
                         <button onClick={handleChangeTheme}><MdDarkMode /></button>
                         <div className="hover:text-darkBlue dark:text-white">Welcome {user?.userName}</div>
